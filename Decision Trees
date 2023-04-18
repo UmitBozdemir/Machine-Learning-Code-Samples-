@@ -1,1 +1,28 @@
+# In machine learning, a decision tree is a predictive model that uses a tree-like structure to represent a sequence of decisions and their potential consequences. The model starts at the root of the tree and follows a series of branching paths, each of which represents a decision based on one or more input features. Each internal node of the tree represents a decision point, and each leaf node represents a final decision or outcome.
 
+# Decision trees are commonly used in classification and regression tasks. In a classification task, the decision tree predicts the class label of an input example, while in a regression task, it predicts a continuous value. The decision tree is built by recursively splitting the data into subsets based on the values of the input features, with the goal of maximizing the information gain or minimizing the impurity at each split.
+
+# Decision trees can be visualized as a flowchart-like structure and are often used as a tool for explaining the reasoning behind the prediction made by the model. They are also easy to interpret and can handle both categorical and numerical data. However, they can suffer from overfitting if not properly regularized, and they may not perform well on complex datasets with many features.
+
+# Here is an example code of Decision Trees using scikit-learn in Python:
+from sklearn import datasets
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+
+# Load the iris dataset
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Train a decision tree classifier
+clf = DecisionTreeClassifier()
+clf.fit(X_train, y_train)
+
+# Evaluate the classifier on the test set
+accuracy = clf.score(X_test, y_test)
+print("Accuracy:", accuracy)
+
+# In this example, we first load the iris dataset and split it into training and testing sets using the train_test_split function from scikit-learn. We then create a DecisionTreeClassifier object and train it on the training set using the fit method. Finally, we evaluate the classifier on the test set using the score method and print the accuracy.
