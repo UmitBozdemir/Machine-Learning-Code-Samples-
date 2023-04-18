@@ -5,7 +5,6 @@
 # The linear regression model can be used for both simple linear regression (when there is only one input variable) and multiple linear regression (when there are multiple input variables). It is widely used in various applications such as finance, economics, social sciences, and engineering.
 
 # Here's an example code in Python using the scikit-learn library to implement linear regression on a dataset:
-
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
