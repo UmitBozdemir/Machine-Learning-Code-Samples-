@@ -1,0 +1,39 @@
+# Support Vector Machines (SVMs) are a type of supervised machine learning algorithm that can be used for classification, regression, and outlier detection.
+
+# In SVM, the goal is to find a hyperplane that separates the data points into different classes in such a way that the margin between the hyperplane and the nearest data points of each class is maximized. The data points closest to the hyperplane are called support vectors.
+
+# SVMs can handle both linear and nonlinear classification problems by using different kernel functions such as polynomial, radial basis function, and sigmoid. SVMs are often used in applications such as text classification, image classification, and bioinformatics. SVMs have been shown to be effective in cases where the number of features is large compared to the number of examples, and where the data is noisy or contains outliers.
+
+# Here's an example code sample in Python using scikit-learn library for Support Vector Machines (SVM) for a binary classification problem:
+# import libraries
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+
+# load iris dataset
+iris = datasets.load_iris()
+
+# select the first two features and the target variable
+X = iris.data[:, :2]
+y = iris.target
+
+# split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# create a SVM classifier with a linear kernel
+svm = SVC(kernel='linear')
+
+# fit the SVM classifier on the training data
+svm.fit(X_train, y_train)
+
+# make predictions on the testing data
+y_pred = svm.predict(X_test)
+
+# calculate the accuracy of the classifier
+accuracy = accuracy_score(y_test, y_pred)
+
+# print the accuracy of the classifier
+print("Accuracy:", accuracy)
+
+# In this example, we are using the iris dataset and selecting only the first two features (sepal length and sepal width) for visualization purposes. We split the data into training and testing sets, create a SVM classifier with a linear kernel, and fit it on the training data. We then make predictions on the testing data and calculate the accuracy of the classifier using the accuracy_score function from scikit-learn's metrics module. Finally, we print the accuracy of the classifier.
