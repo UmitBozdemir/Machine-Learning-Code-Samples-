@@ -1,0 +1,35 @@
+# Naive Bayes is a probabilistic classification algorithm used in machine learning for binary and multi-class classification problems. It is based on the Bayes' theorem which states that the probability of a hypothesis (target class) given the evidence (predictors or features) is proportional to the probability of the evidence given the hypothesis, multiplied by the prior probability of the hypothesis.
+
+# The "Naive" in Naive Bayes refers to the assumption that the features are conditionally independent given the class. This means that the occurrence of one feature does not affect the occurrence of any other feature. Although this assumption is often violated in practice, Naive Bayes can still perform well in many real-world scenarios.
+
+# The algorithm calculates the probability of each class given the features and selects the class with the highest probability as the predicted class. To do this, it first estimates the prior probability of each class, based on the frequency of the classes in the training set. Then, it calculates the conditional probability of each feature given each class, again based on the frequency of the features in the training set. Finally, it uses Bayes' theorem to calculate the posterior probability of each class given the features and selects the class with the highest probability as the predicted class.
+
+# Naive Bayes is a fast and simple algorithm that can be trained on relatively small datasets. It is often used in text classification, spam filtering, sentiment analysis, and other applications where the features are discrete and the number of features is large compared to the number of training examples.
+
+# Here's an example code for Naive Bayes classification using scikit-learn library in Python:
+from sklearn.datasets import load_iris
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load the iris dataset
+iris = load_iris()
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)
+
+# Create a Naive Bayes classifier
+clf = GaussianNB()
+
+# Train the classifier on the training set
+clf.fit(X_train, y_train)
+
+# Predict the classes of the test set
+y_pred = clf.predict(X_test)
+
+# Calculate the accuracy of the classifier
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Accuracy:", accuracy)
+
+# In this example, we first load the iris dataset and split it into training and testing sets using the train_test_split function. Then, we create a GaussianNB classifier, which is a type of Naive Bayes classifier that assumes the features are normally distributed. We train the classifier on the training set using the fit method and then use it to predict the classes of the test set using the predict method. Finally, we calculate the accuracy of the classifier using the accuracy_score function from scikit-learn's metrics module.
