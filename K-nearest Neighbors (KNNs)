@@ -1,0 +1,34 @@
+# K-nearest neighbors (KNN) is a non-parametric supervised learning algorithm used for classification and regression tasks in machine learning. The KNN algorithm uses a database of labeled training examples to classify new unseen examples.
+
+# In KNN, "K" represents the number of nearest neighbors considered for classification. Given a new observation, the KNN algorithm searches through the training set to find the K training examples that are closest to the new observation, based on some distance metric such as Euclidean distance or cosine similarity.
+
+# For classification tasks, the class label of the new observation is determined by a majority vote among its K nearest neighbors. For regression tasks, the output value is determined by the average of the output values of its K nearest neighbors.
+
+# KNN is a lazy learner, meaning that it doesn't learn a model from the training data, but instead stores the entire training dataset and computes predictions at runtime. KNN is simple and easy to implement, and can perform well on small to medium-sized datasets.
+
+# Here's a Python code sample of K-nearest Neighbors algorithm using scikit-learn library for classification task:
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load the iris dataset
+iris = load_iris()
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.3, random_state=42)
+
+# Create a KNN classifier with k=3
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# Train the classifier using the training data
+knn.fit(X_train, y_train)
+
+# Make predictions on the testing data
+y_pred = knn.predict(X_test)
+
+# Calculate the accuracy of the classifier
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# In this code, we load the iris dataset from scikit-learn's datasets module, split the dataset into training and testing sets, create a KNN classifier with k=3, train the classifier using the training data, make predictions on the testing data, and calculate the accuracy of the classifier using the accuracy_score function from scikit-learn's metrics module.
