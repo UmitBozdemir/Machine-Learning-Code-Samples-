@@ -1,0 +1,34 @@
+# K-Means clustering is a popular unsupervised machine learning algorithm used for grouping similar data points together based on their similarity. It is a type of centroid-based clustering where the data points are divided into K clusters, where K is a predefined number of clusters specified by the user.
+
+# The algorithm works by first selecting K random centroids, one for each cluster. Then, for each data point, the algorithm finds the nearest centroid and assigns the data point to the cluster associated with that centroid. After all the data points have been assigned to clusters, the algorithm recalculates the centroids of each cluster as the mean of all the data points in that cluster. This process of assigning data points to clusters and updating centroids is repeated until the centroids no longer change significantly, or a maximum number of iterations is reached.
+
+# The goal of K-Means clustering is to minimize the sum of squared distances between each data point and its assigned centroid, which is also known as the within-cluster sum of squares (WCSS). This objective is achieved by optimizing the position of the centroids such that the data points are grouped together in a way that minimizes the WCSS. The algorithm can be applied to various types of data and has many practical applications, including image segmentation, customer segmentation, and anomaly detection.
+
+# Here's a code sample of K-Means clustering in Python using the scikit-learn library:
+from sklearn.cluster import KMeans
+import numpy as np
+
+# Generate some sample data
+X = np.random.rand(100, 2)
+
+# Create a KMeans instance with 3 clusters
+kmeans = KMeans(n_clusters=3)
+
+# Fit the data to the model
+kmeans.fit(X)
+
+# Get the cluster labels and centroids
+labels = kmeans.labels_
+centroids = kmeans.cluster_centers_
+
+# Plot the data points and centroids
+import matplotlib.pyplot as plt
+plt.scatter(X[:, 0], X[:, 1], c=labels)
+plt.scatter(centroids[:, 0], centroids[:, 1], marker='x', s=200, linewidths=3, color='r')
+plt.show()
+
+# In this example, we first generate some random 2-dimensional data points and create a KMeans instance with 3 clusters. We then fit the data to the model using the fit() method.
+
+# We can then get the cluster labels for each data point using the labels_ attribute of the KMeans instance and the centroids of each cluster using the cluster_centers_ attribute.
+
+# Finally, we plot the data points and centroids using Matplotlib, where the data points are colored according to their cluster label and the centroids are marked with a red 'x'.
