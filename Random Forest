@@ -1,0 +1,36 @@
+# Random Forest is a supervised machine learning algorithm that is used for classification, regression, and other tasks. It is an ensemble learning method that combines multiple decision trees, where each tree is trained on a different subset of the data and a random subset of features.
+
+# In Random Forest, the input data is divided into random subsets called bootstrap samples, and a decision tree is built on each sample. The final prediction is made by aggregating the predictions of all the decision trees, either by majority voting (for classification) or averaging (for regression).
+
+# The random selection of features and samples during the tree building process helps to prevent overfitting and improves the generalization performance of the model. This makes Random Forest a popular algorithm for a wide range of applications, including image and speech recognition, fraud detection, and bioinformatics.
+
+# Here's a code sample of Random Forest using scikit-learn in Python:
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+
+# Generate a random dataset
+X, y = make_classification(n_samples=1000, n_features=10, n_informative=5, n_classes=2, random_state=42)
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Random Forest classifier with 100 trees
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Fit the classifier to the training data
+rf_clf.fit(X_train, y_train)
+
+# Predict the classes of the test data
+y_pred = rf_clf.predict(X_test)
+
+# Calculate the accuracy of the classifier
+accuracy = rf_clf.score(X_test, y_test)
+
+print("Random Forest Accuracy:", accuracy)
+
+# In this code sample, we first generate a random dataset using the make_classification function from scikit-learn. We then split the dataset into training and testing sets using the train_test_split function.
+
+# Next, we create a Random Forest classifier with 100 trees using the RandomForestClassifier class from scikit-learn. We fit the classifier to the training data using the fit method, and then predict the classes of the test data using the predict method.
+
+# Finally, we calculate the accuracy of the classifier using the score method, and print it out.
