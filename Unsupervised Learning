@@ -1,0 +1,29 @@
+# Unsupervised learning is a type of machine learning where the model is trained on an unlabeled dataset, meaning the data has not been pre-labeled or classified by a human expert. In unsupervised learning, the model learns to identify patterns and relationships in the data by itself, without any prior knowledge or guidance.
+
+# The main goal of unsupervised learning is to discover hidden patterns or structure within the data, which can then be used to gain insights and make predictions about future data. Unsupervised learning algorithms can be used for a variety of tasks, including clustering, dimensionality reduction, and anomaly detection.
+
+# Examples of unsupervised learning algorithms include k-means clustering, principal component analysis (PCA), and autoencoders.
+
+# Here is an example code sample of unsupervised learning using the k-means clustering algorithm in Python:
+from sklearn.cluster import KMeans
+import numpy as np
+
+# Create an unlabeled dataset of 100 points with two features
+X = np.random.rand(100, 2)
+
+# Initialize the k-means clustering algorithm with k=2 clusters
+kmeans = KMeans(n_clusters=2)
+
+# Fit the algorithm to the data and predict the cluster labels
+kmeans.fit(X)
+labels = kmeans.predict(X)
+
+# Print the cluster centroids and labels
+print("Cluster centroids:")
+print(kmeans.cluster_centers_)
+print("Cluster labels:")
+print(labels)
+
+# In this code, we first create an unlabeled dataset of 100 points with two features using numpy's random function. We then initialize the k-means clustering algorithm with k=2 clusters, and fit the algorithm to the data using the fit method. We also predict the cluster labels for each data point using the predict method.
+
+# Finally, we print the cluster centroids and labels using the cluster_centers_ and labels_ attributes of the KMeans object. The cluster centroids represent the centers of the two clusters found by the algorithm, while the cluster labels indicate which cluster each data point belongs to.
