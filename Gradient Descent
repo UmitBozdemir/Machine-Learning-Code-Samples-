@@ -1,0 +1,51 @@
+# Gradient descent is an optimization algorithm used in machine learning to minimize the error or cost function of a model. The cost function measures how well the model is performing on the training data, and the goal is to find the values of the model parameters (weights and biases) that minimize this cost function.
+
+# Gradient descent works by iteratively adjusting the parameters in the direction of the negative gradient of the cost function, which corresponds to the steepest descent in the error surface. This means that the algorithm takes small steps in the direction of the negative gradient until it reaches a minimum.
+
+# In practice, there are different variants of gradient descent, such as batch gradient descent, stochastic gradient descent, and mini-batch gradient descent, which differ in the amount of data used to calculate the gradient and the frequency of updates to the model parameters. These variants are used depending on the size of the dataset and the computational resources available.
+
+# Here's a Python code sample of the batch gradient descent algorithm for linear regression:
+import numpy as np
+
+# Define the cost function
+def cost_function(X, y, theta):
+    m = len(y)
+    J = np.sum((X.dot(theta) - y)**2)/(2*m)
+    return J
+
+# Define the batch gradient descent algorithm
+def gradient_descent(X, y, theta, alpha, num_iters):
+    m = len(y)
+    J_history = np.zeros(num_iters)
+
+    for i in range(num_iters):
+        h = X.dot(theta)
+        theta = theta - alpha * (1/m) * (X.T.dot(h-y))
+        J_history[i] = cost_function(X, y, theta)
+
+    return theta, J_history
+
+# Generate some random data for testing
+m = 100
+X = 2 * np.random.rand(m, 1)
+y = 4 + 3 * X + np.random.randn(m, 1)
+
+# Add bias term to X
+X_b = np.c_[np.ones((m, 1)), X]
+
+# Set initial values of theta and learning rate alpha
+theta = np.random.randn(2,1)
+alpha = 0.1
+num_iters = 1000
+
+# Run gradient descent to find optimal theta
+theta, J_history = gradient_descent(X_b, y, theta, alpha, num_iters)
+
+# Plot the cost function vs. number of iterations
+import matplotlib.pyplot as plt
+plt.plot(range(num_iters), J_history)
+plt.xlabel('Number of iterations')
+plt.ylabel('Cost function')
+plt.show()
+
+# In this code sample, we first define the cost function and then implement the batch gradient descent algorithm using a for loop. We also generate some random data for testing and add a bias term to the feature matrix X. Finally, we plot the cost function vs. the number of iterations to visualize the convergence of the algorithm.
