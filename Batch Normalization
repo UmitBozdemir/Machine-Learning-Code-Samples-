@@ -1,0 +1,30 @@
+# Batch normalization is a technique used in machine learning to normalize the inputs of each layer of a neural network. The normalization is performed on a batch of training examples, hence the name "batch" normalization.
+
+# The purpose of batch normalization is to address the problem of internal covariate shift, which occurs when the distribution of inputs to a layer changes during training. This can slow down the training process and lead to overfitting. Batch normalization aims to alleviate this problem by normalizing the inputs to each layer, making them more consistent and reducing the need for excessive regularization.
+
+# During training, batch normalization calculates the mean and variance of each feature in a batch of examples. It then normalizes the features by subtracting the mean and dividing by the variance, effectively centering the data around zero and scaling it to unit variance. The normalized features are then scaled and shifted using learned parameters, allowing the network to learn the optimal scale and shift for each feature.
+
+# Batch normalization has been shown to improve the performance of deep neural networks on a wide range of tasks, including image classification, speech recognition, and natural language processing.
+
+# Here's an example of how to implement batch normalization in PyTorch:
+import torch.nn as nn
+
+class MyModel(nn.Module):
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.linear1 = nn.Linear(100, 50)
+        self.bn1 = nn.BatchNorm1d(50)
+        self.linear2 = nn.Linear(50, 10)
+        self.bn2 = nn.BatchNorm1d(10)
+        
+    def forward(self, x):
+        x = self.linear1(x)
+        x = self.bn1(x)
+        x = nn.functional.relu(x)
+        x = self.linear2(x)
+        x = self.bn2(x)
+        return x
+
+# In this example, we define a simple neural network with two linear layers and two batch normalization layers. The nn.BatchNorm1d class is used to define the batch normalization layers, which operate on the second dimension of the input tensor (i.e., the features dimension).
+
+# In the forward method, we apply the linear layers followed by batch normalization and ReLU activation. Finally, we apply the second linear layer followed by batch normalization and return the output.
