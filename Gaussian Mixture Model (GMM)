@@ -1,0 +1,34 @@
+# A Gaussian Mixture Model (GMM) is a probabilistic model used in machine learning that represents a collection of Gaussian distributions, each with its own mean and covariance. GMMs are commonly used for modeling complex data distributions, especially those that cannot be modeled by a single Gaussian distribution.
+
+# In a GMM, each data point is assumed to belong to one of several Gaussian distributions. The model parameters are learned by optimizing the likelihood of the observed data using an algorithm such as the Expectation-Maximization (EM) algorithm. Once the model is trained, it can be used to generate new data points or to classify new data points based on their probability of belonging to each Gaussian distribution.
+
+# GMMs have numerous applications, including image processing, speech recognition, and anomaly detection. They are particularly useful in cases where the data can be described by multiple underlying distributions, such as in the case of mixture distributions or clusters.
+
+# Here is an example code snippet in Python using the scikit-learn library to implement Gaussian Mixture Models:
+from sklearn.mixture import GaussianMixture
+import numpy as np
+
+# Generate some sample data
+np.random.seed(42)
+n_samples = 500
+X = np.concatenate([np.random.normal(0, 1, int(0.7 * n_samples)),
+                    np.random.normal(5, 1, int(0.3 * n_samples))]).reshape(-1, 1)
+
+# Fit a GMM model to the data
+gmm = GaussianMixture(n_components=2, random_state=42)
+gmm.fit(X)
+
+# Predict the labels for new data points
+labels = gmm.predict(X)
+
+# Print the model parameters
+print("Means:", gmm.means_)
+print("Covariances:", gmm.covariances_)
+print("Weights:", gmm.weights_)
+
+# Plot the data and the predicted labels
+import matplotlib.pyplot as plt
+plt.scatter(X, labels)
+plt.show()
+
+# In this example, we generate some sample data with two underlying Gaussian distributions, then fit a GMM model with two components to the data. We use the predict method to predict the labels for the same data points, and plot the data along with the predicted labels. Finally, we print the means, covariances, and weights of the fitted GMM model.
