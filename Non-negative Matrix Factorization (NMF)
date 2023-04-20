@@ -1,0 +1,30 @@
+# Non-negative matrix factorization (NMF) is a machine learning technique that decomposes a matrix into two non-negative matrices. It is often used for dimensionality reduction, feature extraction, and data clustering.
+
+# Given a non-negative matrix X of size m x n, NMF seeks to factorize it into two non-negative matrices W and H, of size m x r and r x n respectively, such that X ≈ WH. Here, r is the rank of the factorization, which is usually chosen to be smaller than the dimensions of X, in order to reduce the dimensionality of the data.
+
+# The factorization is typically performed using an iterative algorithm that minimizes a cost function that measures the difference between X and WH. This cost function can be chosen based on the specific application and can incorporate regularization terms to encourage sparsity or to prevent overfitting.
+
+# NMF has been used in a wide range of applications, including image and audio processing, text mining, and bioinformatics. It has been shown to be particularly effective in extracting meaningful features from high-dimensional data, where traditional techniques such as principal component analysis (PCA) may not be appropriate due to the non-negative nature of the data.
+
+# Here's a code sample of Non-negative Matrix Factorization using Python and the scikit-learn library:
+from sklearn.decomposition import NMF
+import numpy as np
+
+# Create a sample data matrix
+X = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+# Define the rank of the factorization
+r = 2
+
+# Perform the NMF factorization
+model = NMF(n_components=r, init='random', random_state=0)
+W = model.fit_transform(X)
+H = model.components_
+
+# Print the original matrix and its NMF factorization
+print("Original matrix:")
+print(X)
+print("NMF factorization:")
+print(np.round(W.dot(H), 2))
+
+# In this example, we create a sample data matrix X with 3 rows and 3 columns. We then define the rank of the factorization to be 2. We use the NMF class from the scikit-learn library to perform the NMF factorization, and we set the number of components to be r, the initialization to be random, and the random seed to be 0. We then obtain the factor matrices W and H using the fit_transform and components_ methods, respectively. Finally, we print the original matrix and its NMF factorization, rounded to 2 decimal places.
