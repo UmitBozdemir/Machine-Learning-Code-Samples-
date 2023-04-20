@@ -1,0 +1,55 @@
+# Active learning is a machine learning technique where an algorithm actively selects a subset of the data to be labeled by a human expert. The labeled data is then used to train a model to classify or predict new data. The selection of the subset of data is based on the algorithm's uncertainty or confidence about its prediction on the unlabeled data.
+
+# In other words, active learning is a process in which an algorithm selects the most informative examples from a large pool of unlabeled data and presents them to a human expert for labeling. By doing so, the algorithm learns from the labeled examples and improves its performance over time. This approach is particularly useful in scenarios where labeling large amounts of data is time-consuming or expensive, as it can significantly reduce the amount of labeled data required to achieve good performance.
+
+# Here's a simple code sample of active learning in Python using scikit-learn and the uncertainty sampling strategy:
+from sklearn.datasets import make_classification
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+# Generate a random dataset
+X, y = make_classification(n_samples=1000, n_features=10, random_state=42)
+
+# Split the dataset into a training set and a pool of unlabeled data
+X_train, X_pool, y_train, y_pool = train_test_split(X, y, test_size=0.9, random_state=42)
+
+# Initialize a logistic regression model
+model = LogisticRegression()
+
+# Train the model on the labeled data
+model.fit(X_train, y_train)
+
+# Define the uncertainty sampling strategy
+def uncertainty_sampling(model, X_pool, n_instances=1):
+    # Predict the probability of each sample belonging to each class
+    probs = model.predict_proba(X_pool)
+    # Calculate the uncertainty of each sample
+    uncertainty = 1 - np.max(probs, axis=1)
+    # Select the samples with the highest uncertainty
+    idx = np.argsort(uncertainty)[-n_instances:]
+    return idx
+
+# Select the first 10 instances to label
+n_queries = 10
+query_idx = uncertainty_sampling(model, X_pool, n_queries)
+X_query = X_pool[query_idx]
+y_query = y_pool[query_idx]
+
+# Remove the queried instances from the pool
+X_pool = np.delete(X_pool, query_idx, axis=0)
+y_pool = np.delete(y_pool, query_idx)
+
+# Label the queried instances
+y_query_labeled = np.zeros(n_queries) # replace this with actual labeling
+
+# Add the labeled instances to the training set
+X_train = np.concatenate([X_train, X_query])
+y_train = np.concatenate([y_train, y_query_labeled])
+
+# Train the model on the updated training set
+model.fit(X_train, y_train)
+
+# Repeat the process until a stopping criterion is met
+
+# This code generates a random dataset, splits it into a training set and a pool of unlabeled data, initializes a logistic regression model, defines the uncertainty sampling strategy, selects the first 10 instances to label using the strategy, removes the queried instances from the pool, labels the queried instances (in this case, simply sets them to zero), adds the labeled instances to the training set, trains the model on the updated training set, and repeats the process until a stopping criterion is met (not shown in the code).
