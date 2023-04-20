@@ -1,0 +1,25 @@
+# RMSprop (Root Mean Square Propagation) is a popular optimization algorithm used in machine learning for training deep neural networks. It is an adaptive learning rate optimization algorithm that uses a moving average of the squared gradients to adjust the learning rate of each weight.
+
+# The basic idea behind RMSprop is to maintain a moving average of the squared gradients for each weight. This moving average is used to normalize the gradient at each iteration, so that the learning rate is scaled appropriately for each weight. Specifically, the update rule for each weight w is given by:
+# w = w - (learning_rate / (sqrt(mean_squared_gradients) + epsilon)) * gradient
+# where learning_rate is the step size, mean_squared_gradients is the moving average of the squared gradients, epsilon is a small constant to avoid division by zero, and gradient is the gradient of the loss function with respect to w.
+
+# By using a moving average of the squared gradients, RMSprop is able to adapt the learning rate to the geometry of the loss function and converge faster than other optimization algorithms like stochastic gradient descent (SGD) or AdaGrad. It is particularly effective for optimizing deep neural networks with non-convex loss functions.
+
+# Here's an example of implementing RMSprop optimization in Python using the TensorFlow library:
+import tensorflow as tf
+
+# Define the optimizer with a learning rate of 0.001 and RMSprop algorithm
+optimizer = tf.keras.optimizers.RMSprop(learning_rate=0.001)
+
+# Define the model and compile it with the optimizer
+model = tf.keras.Sequential([
+  tf.keras.layers.Dense(64, activation='relu'),
+  tf.keras.layers.Dense(10, activation='softmax')
+])
+model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model on the training data
+model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_test, y_test))
+
+# In this example, we define an optimizer object using tf.keras.optimizers.RMSprop with a learning rate of 0.001. We then define a neural network model using the Keras Sequential API and compile it with the RMSprop optimizer and a categorical cross-entropy loss function. Finally, we train the model on the training data using the fit method and evaluate its performance on the test data.
