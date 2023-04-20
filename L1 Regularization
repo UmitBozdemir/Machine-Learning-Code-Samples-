@@ -1,0 +1,36 @@
+# L1 regularization, also known as Lasso regularization, is a technique used in machine learning to prevent overfitting and improve the generalization performance of a model.
+
+# In L1 regularization, a penalty term is added to the cost function of the model, which is proportional to the absolute value of the model's coefficients. This penalty term forces the model to choose a sparse solution by shrinking some of the coefficients to zero, effectively performing feature selection.
+
+# The strength of the L1 regularization can be controlled by a hyperparameter called the regularization parameter (λ), which determines the trade-off between the model's fitting error and the size of the coefficients. A larger λ value will result in more coefficients being set to zero, leading to a simpler model but potentially sacrificing some accuracy.
+
+# Overall, L1 regularization is a powerful tool in preventing overfitting and improving the interpretability of models, especially when dealing with high-dimensional data.
+
+# Here is an example code sample of L1 regularization in Python using scikit-learn:
+from sklearn.linear_model import Lasso
+from sklearn.datasets import load_boston
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# Load the Boston housing dataset
+boston = load_boston()
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(boston.data, boston.target, test_size=0.3, random_state=42)
+
+# Create a Lasso regression model with L1 regularization
+lasso = Lasso(alpha=0.1)
+
+# Fit the model on the training data
+lasso.fit(X_train, y_train)
+
+# Predict the target values for the test data
+y_pred = lasso.predict(X_test)
+
+# Compute the mean squared error of the predictions
+mse = mean_squared_error(y_test, y_pred)
+print("Mean squared error:", mse)
+
+# In this example, we use the Lasso class from scikit-learn to create a Lasso regression model with L1 regularization. We set the regularization parameter alpha to 0.1 to control the strength of the regularization.
+
+# We then fit the model on the training data, predict the target values for the test data, and compute the mean squared error of the predictions to evaluate the model's performance.
