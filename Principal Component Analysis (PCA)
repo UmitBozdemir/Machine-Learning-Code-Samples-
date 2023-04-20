@@ -1,0 +1,28 @@
+# Principal Component Analysis (PCA) is a statistical technique used in machine learning for data reduction and dimensionality reduction. PCA is used to transform a dataset into a new coordinate system by finding the directions of greatest variance in the data, called principal components. These principal components are orthogonal to each other, meaning they are independent and not correlated, and can be used to summarize the original dataset in a more compact form.
+
+# The first principal component represents the direction of greatest variance in the data and explains the largest amount of variation. The second principal component is the direction of the next greatest variance, orthogonal to the first principal component. This process is repeated until all principal components are identified.
+
+# PCA is often used for visualization of high-dimensional data, noise reduction, feature extraction, and data compression. It is commonly used in various fields such as image processing, finance, biology, and social sciences. PCA is a powerful tool for data exploration and analysis, providing a simplified representation of the data while retaining most of the relevant information.
+
+# Here's an example code in Python using scikit-learn library to perform PCA on a sample dataset:
+import numpy as np
+from sklearn.decomposition import PCA
+
+# Sample dataset
+X = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]])
+
+# Instantiate a PCA object with 2 components
+pca = PCA(n_components=2)
+
+# Fit the data to the PCA model and transform the data to the new coordinate system
+X_pca = pca.fit_transform(X)
+
+# Print the original data shape and the transformed data shape
+print("Original data shape: ", X.shape)
+print("Transformed data shape: ", X_pca.shape)
+
+# Print the principal components and the amount of variance explained by each component
+print("Principal components: ", pca.components_)
+print("Variance explained by each component: ", pca.explained_variance_ratio_)
+
+# In this example, we first create a sample dataset X with 4 samples and 3 features. We then create a PCA object with 2 components and fit the data to the model using the fit_transform() method. We print the original data shape and the transformed data shape to show how PCA has reduced the number of features from 3 to 2. Finally, we print the principal components and the amount of variance explained by each component using the components_ and explained_variance_ratio_ attributes of the PCA object.
