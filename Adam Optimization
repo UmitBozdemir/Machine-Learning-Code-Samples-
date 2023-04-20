@@ -1,0 +1,30 @@
+# Adam Optimization is a popular optimization algorithm used in machine learning and deep learning for finding the minimum of the cost function. The name "Adam" stands for Adaptive Moment Estimation, which refers to the fact that the algorithm adapts the learning rate for each parameter based on the historical gradients and the squared gradients.
+
+# The algorithm combines the advantages of two other optimization algorithms: Adagrad and RMSprop. Adagrad adapts the learning rate for each parameter based on the sum of the squared gradients, while RMSprop adapts the learning rate based on an exponentially weighted moving average of the squared gradients. Adam optimization uses both these techniques and also introduces bias correction to ensure that the estimates of the first and second moments are accurate.
+
+# The Adam algorithm computes an exponentially decaying average of past gradients and past squared gradients, which are then used to update the parameters. The updates are scaled by the learning rate, which is adjusted for each parameter based on the estimated variance of the gradient. The algorithm also introduces momentum, which helps to smooth out the updates and avoid getting stuck in local minima.
+
+# Overall, the Adam optimization algorithm is a powerful and widely used optimization algorithm that can help improve the convergence and stability of deep learning models.
+
+# Here's a code sample of how to implement Adam Optimization in Python using the TensorFlow library:
+import tensorflow as tf
+
+# Define the hyperparameters
+learning_rate = 0.001
+beta1 = 0.9
+beta2 = 0.999
+epsilon = 1e-8
+
+# Define the optimizer and pass in the hyperparameters
+optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate, beta_1=beta1, beta_2=beta2, epsilon=epsilon)
+
+# Define the model and compile it using the optimizer
+model = tf.keras.Sequential([...])
+model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
+
+# Train the model using the fit method
+model.fit(x_train, y_train, epochs=10, batch_size=32)
+
+# In this code sample, we first define the hyperparameters for the Adam optimizer: the learning rate, beta1, beta2, and epsilon. We then create an instance of the Adam optimizer using these hyperparameters. We define our model and compile it using the Adam optimizer. Finally, we train the model using the fit method.
+
+# Note that this code sample is just an example and may need to be adjusted depending on the specific requirements of your project.
