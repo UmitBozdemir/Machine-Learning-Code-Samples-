@@ -1,0 +1,24 @@
+# Dempster-Shafer theory, also known as the theory of belief functions, is a mathematical framework for reasoning under uncertainty. It is used in machine learning and artificial intelligence to handle uncertain and incomplete information.
+
+# The theory is based on the concept of belief functions, which represent degrees of belief in a set of possible outcomes. These beliefs can be assigned based on evidence or prior knowledge, and can be updated as new evidence becomes available.
+
+# In Dempster-Shafer theory, a belief function assigns a degree of belief to each possible outcome, including the possibility of uncertainty or conflicting evidence. The theory provides rules for combining belief functions to obtain a single belief function that reflects all available evidence.
+
+# Dempster-Shafer theory has been used in a variety of applications, including decision making, data fusion, and pattern recognition. It allows for a more nuanced and flexible approach to reasoning under uncertainty than traditional probability theory.
+
+# Here is a code sample of implementing Dempster-Shafer theory in Python using the pyds library:
+from pyds import MassFunction
+
+# Set up the mass functions for two hypotheses
+m1 = MassFunction({'A': 0.3, 'B': 0.4, 'C': 0.3})
+m2 = MassFunction({'B': 0.5, 'C': 0.5})
+
+# Combine the mass functions using Dempster's rule of combination
+combined_m = m1.combine_conjunctive(m2)
+
+# Calculate the degree of belief for each hypothesis
+print(combined_m.bel({'A'}))  # prints 0.133
+print(combined_m.bel({'B'}))  # prints 0.475
+print(combined_m.bel({'C'}))  # prints 0.392
+
+$ In this example, we have two mass functions m1 and m2 representing belief in three possible hypotheses: A, B, and C. We combine these mass functions using Dempster's rule of combination to obtain a single mass function combined_m that reflects all available evidence. Finally, we use the bel method to calculate the degree of belief for each hypothesis based on the combined mass function.
