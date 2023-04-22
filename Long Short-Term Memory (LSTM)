@@ -1,0 +1,33 @@
+# Long Short-Term Memory (LSTM) is a type of recurrent neural network (RNN) architecture that is designed to handle the vanishing and exploding gradient problem in traditional RNNs.
+
+# LSTM is composed of repeating units called "memory cells," which are designed to store information for a long period of time. Each memory cell has three gates: the input gate, the output gate, and the forget gate. These gates control the flow of information into and out of the memory cell, allowing the LSTM to selectively remember or forget information.
+
+# The input gate determines which information should be stored in the memory cell, the forget gate decides which information should be discarded, and the output gate determines which information should be outputted. The gates are controlled by a set of learnable parameters, which are updated during the training process.
+
+# LSTMs have been successfully applied to various tasks such as natural language processing, speech recognition, and time-series analysis, where they have shown superior performance compared to traditional RNNs.
+
+# Here is a sample code in Python using Keras library to build a simple LSTM model for sequence classification:
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
+
+# Define LSTM model
+model = Sequential()
+model.add(LSTM(128, input_shape=(X.shape[1], X.shape[2])))
+model.add(Dense(1, activation='sigmoid'))
+
+# Compile the model
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Train the model
+model.fit(X_train, y_train, epochs=50, batch_size=32, validation_data=(X_val, y_val))
+
+# Evaluate the model
+score, acc = model.evaluate(X_test, y_test, batch_size=32)
+print('Test score:', score)
+print('Test accuracy:', acc)
+
+# In this code, we first import the necessary modules from Keras library. We then define the LSTM model by adding an LSTM layer with 128 units, and a dense layer with a sigmoid activation function for binary classification.
+
+# After defining the model, we compile it by specifying the loss function, optimizer, and evaluation metric. We then train the model using the fit method, passing in the training data, validation data, and other hyperparameters such as the number of epochs and batch size.
+
+# Finally, we evaluate the trained model on the test data using the evaluate method, and print the test score and accuracy.
