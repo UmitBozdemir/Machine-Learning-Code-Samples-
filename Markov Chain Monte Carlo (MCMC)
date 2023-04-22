@@ -1,0 +1,71 @@
+# Markov Chain Monte Carlo (MCMC) is a statistical method used in machine learning (ML) for approximating the posterior distribution of a parameter or set of parameters in a probabilistic model. It is a method for sampling from a probability distribution by constructing a Markov Chain that has the desired distribution as its equilibrium distribution.
+
+# In MCMC, a chain of samples is generated iteratively, with each sample being dependent on the previous one. The process involves starting at an initial point in the parameter space and taking a series of steps, with the next step being determined by the current state and a set of transition probabilities. The transition probabilities are chosen such that the equilibrium distribution of the Markov Chain is the desired distribution.
+
+# By using MCMC, it is possible to estimate the posterior distribution of a parameter or set of parameters, even when the likelihood function is difficult to calculate. MCMC is widely used in Bayesian inference, as it provides a flexible and efficient way to explore the posterior distribution of a model.
+
+# Here's an example of implementing a simple Metropolis-Hastings Markov Chain Monte Carlo algorithm for estimating the parameters of a normal distribution:
+import numpy as np
+
+# Define the log-likelihood function for a normal distribution
+def log_likelihood(data, mean, std):
+    return np.sum(-0.5 * ((data - mean) / std)**2 - np.log(std))
+
+# Define the prior distribution for the mean and std
+def log_prior(mean, std):
+    return -0.5 * (mean**2 + np.log(std**2))
+
+# Define the proposal distribution for the mean and std
+def proposal(mean, std, stepsize):
+    return np.array([np.random.normal(mean, stepsize), np.random.normal(std, stepsize)])
+
+# Set the initial values for the mean and std
+current = np.array([0.0, 1.0])
+
+# Set the stepsize for the proposal distribution
+stepsize = 0.1
+
+# Set the number of iterations
+n_iter = 10000
+
+# Generate some data from a normal distribution
+data = np.random.normal(0.0, 1.0, size=100)
+
+# Initialize the chain
+chain = np.zeros((n_iter, 2))
+
+# Initialize the acceptance counter
+acceptance_counter = 0
+
+# Perform the iterations
+for i in range(n_iter):
+    # Generate a proposal
+    proposed = proposal(current[0], current[1], stepsize)
+
+    # Calculate the log-likelihood and prior for the proposed parameters
+    proposed_log_likelihood = log_likelihood(data, proposed[0], proposed[1])
+    proposed_log_prior = log_prior(proposed[0], proposed[1])
+
+    # Calculate the log-likelihood and prior for the current parameters
+    current_log_likelihood = log_likelihood(data, current[0], current[1])
+    current_log_prior = log_prior(current[0], current[1])
+
+    # Calculate the acceptance ratio
+    acceptance_ratio = np.exp(proposed_log_likelihood + proposed_log_prior - current_log_likelihood - current_log_prior)
+
+    # Accept or reject the proposal
+    if np.random.uniform() < acceptance_ratio:
+        current = proposed
+        acceptance_counter += 1
+
+    # Store the current parameters in the chain
+    chain[i, :] = current
+
+# Print the acceptance rate
+print(f"Acceptance rate: {acceptance_counter / n_iter}")
+
+# Print the estimated mean and std
+print(f"Estimated mean: {np.mean(chain[:, 0])}")
+print(f"Estimated std: {np.mean(chain[:, 1])}")
+
+# In this example, we first define the log-likelihood function, the prior distribution, and the proposal distribution. We then set the initial values for the mean and standard deviation, the stepsize for the proposal distribution, and the number of iterations to perform. We generate some data from a normal distribution and initialize the chain and the acceptance counter. We then perform the iterations of the Metropolis-Hastings algorithm, generating a proposal at each step, calculating the acceptance ratio, and accepting or rejecting the proposal based on this ratio. Finally, we store the current parameters in the chain and print the acceptance rate and the estimated mean and standard deviation.
