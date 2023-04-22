@@ -1,0 +1,37 @@
+# Recurrent Neural Networks (RNNs) are a class of artificial neural networks designed to process sequential data such as time series, speech, natural language, and music. Unlike feedforward neural networks that process fixed-size inputs, RNNs allow information to be propagated through a feedback loop, enabling the network to maintain an internal memory of past inputs.
+
+# The key feature of RNNs is their ability to capture the temporal dependencies of sequential data by passing information from one time step to the next. This is achieved by introducing hidden state variables that carry information from one time step to the next and are updated at each time step based on the current input and the previous hidden state. The output of the network at each time step depends not only on the current input but also on the previous hidden state, making RNNs capable of modeling complex temporal patterns.
+
+# RNNs come in various forms, such as vanilla RNNs, LSTM (Long Short-Term Memory) networks, and GRU (Gated Recurrent Unit) networks, each with different architectures and training algorithms. They are widely used in a variety of applications such as speech recognition, language modeling, machine translation, image captioning, and time series forecasting.
+
+# Here is an example of how to implement a simple RNN using TensorFlow library in Python:
+import tensorflow as tf
+from tensorflow.keras.layers import SimpleRNN, Dense
+
+# Load dataset
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+
+# Preprocess dataset
+x_train = x_train.reshape(-1, 28, 28) / 255.0
+x_test = x_test.reshape(-1, 28, 28) / 255.0
+y_train = tf.keras.utils.to_categorical(y_train)
+y_test = tf.keras.utils.to_categorical(y_test)
+
+# Define model
+model = tf.keras.Sequential([
+    SimpleRNN(units=64, input_shape=(28, 28)),
+    Dense(units=10, activation='softmax')
+])
+
+# Compile model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Train model
+model.fit(x_train, y_train, epochs=10, batch_size=128, validation_split=0.2)
+
+# Evaluate model
+model.evaluate(x_test, y_test)
+
+# In this example, we are using the MNIST dataset of handwritten digits. We preprocess the data by reshaping it into a 3D tensor to fit the input shape of the RNN layer, and normalize it by dividing by 255.0. We define a simple RNN layer with 64 units followed by a dense output layer with 10 units and softmax activation. We compile the model with Adam optimizer, categorical cross-entropy loss, and accuracy metric. We train the model for 10 epochs with a batch size of 128 and 20% validation split. Finally, we evaluate the model on the test set.
