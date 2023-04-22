@@ -1,0 +1,32 @@
+# Decision theory is a framework used in machine learning to model decision-making processes. It involves selecting the best course of action from several options by considering the consequences of each choice. Decision theory provides a way to analyze and optimize decision-making processes, especially in situations where uncertainty and risk are involved.
+
+# In machine learning, decision theory is often used in the context of decision trees, which are graphical representations of decision-making processes. Decision trees use a series of nodes and branches to represent different possible decisions and their potential outcomes. By analyzing the potential outcomes of each decision, decision trees can be used to identify the most optimal decision to make in a given scenario.
+
+# Overall, decision theory is an important tool in machine learning, as it allows data scientists to make informed decisions based on data and probability, and to optimize their decision-making processes.
+
+# Here is a simple code sample of using decision theory in machine learning, specifically in building a decision tree classifier using the scikit-learn library in Python:
+from sklearn import datasets
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load iris dataset
+iris = datasets.load_iris()
+
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.3, random_state=42)
+
+# Build decision tree classifier
+clf = DecisionTreeClassifier(random_state=42)
+clf.fit(X_train, y_train)
+
+# Make predictions on test set
+y_pred = clf.predict(X_test)
+
+# Evaluate accuracy of classifier
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+# In this code, we first load the iris dataset and split it into training and testing sets using the train_test_split function from scikit-learn. Then, we create a DecisionTreeClassifier object and fit it to the training data using the fit method. We then use the trained classifier to make predictions on the test set and evaluate its accuracy using the accuracy_score function.
+
+# The decision tree classifier uses decision theory to make decisions based on the features of the iris dataset, ultimately classifying the samples into three different flower species.
