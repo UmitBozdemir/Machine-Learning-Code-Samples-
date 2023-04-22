@@ -1,0 +1,36 @@
+# Maximum Likelihood Estimation (MLE) is a statistical method used to estimate the parameters of a probability distribution based on a set of observed data. The basic idea behind MLE is to find the values of the parameters that maximize the likelihood function, which measures how well the observed data fits the distribution with the given parameters.
+
+# In other words, MLE seeks to find the parameter values that make the observed data most probable, assuming that the data is generated from the given probability distribution. This involves calculating the likelihood of observing the data for different values of the parameters, and selecting the values that result in the highest likelihood.
+
+# The MLE method can be used for a wide range of probability distributions, including the normal distribution, binomial distribution, Poisson distribution, and others. It is a powerful and widely used tool in statistical inference and machine learning, as it provides a way to estimate the underlying parameters of a model from observed data.
+
+# Here's an example of implementing Maximum Likelihood Estimation for a normal distribution using Python:
+import numpy as np
+from scipy.stats import norm
+
+# Generating some random data
+data = np.random.normal(loc=5, scale=2, size=100)
+
+# Define the likelihood function for a normal distribution
+def likelihood(theta, data):
+    mu, sigma = theta
+    return np.sum(norm.logpdf(data, loc=mu, scale=sigma))
+
+# Define the negative log-likelihood function (to be minimized)
+def neg_log_likelihood(theta, data):
+    return -likelihood(theta, data)
+
+# Use optimization to find the maximum likelihood estimates
+from scipy.optimize import minimize
+theta_0 = [0, 1] # initial values of mu and sigma
+res = minimize(neg_log_likelihood, theta_0, args=(data,))
+mu_mle, sigma_mle = res.x
+
+# Print the MLE estimates of mu and sigma
+print("Maximum likelihood estimates:")
+print(f"mu = {mu_mle}")
+print(f"sigma = {sigma_mle}")
+
+# In this example, we first generate some random data from a normal distribution with mean 5 and standard deviation 2. We then define the likelihood function for a normal distribution, which takes as input a vector theta containing the mean and standard deviation parameters, and the observed data. The function returns the log-likelihood of the observed data under the normal distribution with the given parameters.
+
+# Next, we define the negative log-likelihood function, which is the function to be minimized in order to find the maximum likelihood estimates. We use the minimize function from the scipy.optimize module to find the values of mu and sigma that maximize the likelihood of the observed data. Finally, we print the MLE estimates of mu and sigma.
