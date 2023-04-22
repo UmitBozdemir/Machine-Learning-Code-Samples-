@@ -1,0 +1,51 @@
+# Fuzzy logic is a type of logic used in artificial intelligence and machine learning that allows for the representation of uncertainty and vagueness in data. Unlike traditional logic, which is binary (true or false), fuzzy logic uses degrees of truth, where an input can be partially true or partially false. This makes fuzzy logic well-suited for situations where exact values are difficult to obtain or when there is imprecision or ambiguity in the data.
+
+# In fuzzy logic, input variables are mapped to fuzzy sets, which define a range of values that the input variable can take on with varying degrees of membership. These fuzzy sets are then used to define a set of rules that determine the output variable based on the input variables. The output variable is also represented as a fuzzy set, which allows for a degree of uncertainty in the output.
+
+# Fuzzy logic is used in a variety of applications, including control systems, pattern recognition, and decision-making. It has proven to be particularly useful in situations where traditional methods of data analysis and decision-making are insufficient.
+
+# Here's a Python code sample of fuzzy logic using the scikit-fuzzy library:
+import numpy as np
+import skfuzzy as fuzz
+
+# Input variables
+age = np.arange(0, 101, 1)
+income = np.arange(0, 201, 1)
+
+# Output variable
+savings = np.arange(0, 101, 1)
+
+# Define fuzzy sets for age
+young = fuzz.trapmf(age, [0, 0, 25, 35])
+middle_aged = fuzz.trapmf(age, [25, 35, 45, 55])
+old = fuzz.trapmf(age, [45, 55, 100, 100])
+
+# Define fuzzy sets for income
+low = fuzz.trapmf(income, [0, 0, 50, 75])
+medium = fuzz.trapmf(income, [50, 75, 100, 125])
+high = fuzz.trapmf(income, [100, 125, 200, 200])
+
+# Define fuzzy sets for savings
+low_savings = fuzz.trapmf(savings, [0, 0, 25, 50])
+medium_savings = fuzz.trapmf(savings, [25, 50, 75, 100])
+high_savings = fuzz.trapmf(savings, [75, 100, 100, 100])
+
+# Create fuzzy rules
+rule1 = fuzz.relation_min(young, low)
+rule2 = fuzz.relation_min(middle_aged, medium)
+rule3 = fuzz.relation_min(old, high)
+
+# Apply rules to calculate output
+savings_activation_low = fuzz.relation_prod(rule1, low_savings)
+savings_activation_medium = fuzz.relation_prod(rule2, medium_savings)
+savings_activation_high = fuzz.relation_prod(rule3, high_savings)
+
+# Combine output results
+agg = np.fmax(savings_activation_low, np.fmax(savings_activation_medium, savings_activation_high))
+
+# Calculate defuzzified result
+result = fuzz.defuzz(savings, agg, 'centroid')
+
+print(result)
+
+# This code defines three input variables (age, income) and one output variable (savings). Fuzzy sets are defined for each variable, and fuzzy rules are created to determine the output based on the inputs. Finally, the defuzzified result is calculated using the centroid method. Note that this is a simple example and more complex fuzzy logic systems can be created using the same principles.
