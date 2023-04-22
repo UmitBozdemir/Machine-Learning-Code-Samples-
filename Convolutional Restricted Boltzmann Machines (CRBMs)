@@ -1,0 +1,57 @@
+# Convolutional Restricted Boltzmann Machines (CRBMs) are a type of deep learning model that is commonly used in the field of image recognition and processing. A CRBM is a variant of the restricted Boltzmann machine (RBM) that has been modified to take advantage of the spatial structure of the input data.
+
+# In a CRBM, the input data is usually an image, which is represented as a matrix of pixel values. The CRBM consists of a layer of visible units and a layer of hidden units. The visible units are connected to the input pixels, while the hidden units are connected to each other in a convolutional manner. The convolutional connections between the hidden units allow the CRBM to capture the local spatial dependencies between neighboring pixels in the input image.
+
+# The CRBM is trained using a process called contrastive divergence, which involves updating the weights of the connections between the visible and hidden units based on the difference between the actual input and the model's reconstructed input.
+
+# Once trained, the CRBM can be used to extract features from images, which can then be fed into a classifier to perform tasks such as image recognition or object detection.
+
+# Here's a sample code for a Convolutional Restricted Boltzmann Machine using PyTorch:
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class CRBM(nn.Module):
+    def __init__(self, input_channels, output_channels, kernel_size, stride):
+        super(CRBM, self).__init__()
+        self.conv = nn.Conv2d(input_channels, output_channels, kernel_size, stride, bias=True)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.hidden = nn.Linear(output_channels * ((input_size - kernel_size + 1) // stride) ** 2, hidden_size)
+        self.output = nn.Linear(hidden_size, output_size)
+        
+    def forward(self, x):
+        x = torch.sigmoid(self.conv(x))
+        x = self.pool(x)
+        x = x.view(x.size(0), -1)
+        x = torch.sigmoid(self.hidden(x))
+        x = self.output(x)
+        return x
+    
+    def train(self, train_data, num_epochs, learning_rate):
+        criterion = nn.MSELoss()
+        optimizer = optim.SGD(self.parameters(), lr=learning_rate)
+        for epoch in range(num_epochs):
+            loss = 0
+            for batch in train_data:
+                batch = batch.to(device)
+                output = self.forward(batch)
+                loss += criterion(output, batch)
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+            print('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, num_epochs, loss.item()))
+
+# Example usage
+input_channels = 3
+output_channels = 16
+kernel_size = 5
+stride = 1
+hidden_size = 100
+output_size = 10
+num_epochs = 10
+learning_rate = 0.01
+
+model = CRBM(input_channels, output_channels, kernel_size, stride).to(device)
+model.train(train_data, num_epochs, learning_rate)
+
+# Note that this is just a basic implementation, and there are many ways to customize and optimize the CRBM model based on your specific needs and requirements.
