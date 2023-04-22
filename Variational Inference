@@ -1,0 +1,62 @@
+# Variational inference is a statistical method used in machine learning to approximate the posterior distribution of a probabilistic model. In Bayesian inference, the posterior distribution represents the probability distribution of the model parameters given the observed data. However, in many cases, the exact posterior distribution is intractable and difficult to compute, especially for complex models.
+
+# Variational inference approximates the posterior distribution with a simpler, tractable distribution that belongs to a family of distributions with known parameters. The goal is to find the member of this family that is closest to the true posterior distribution, as measured by a divergence metric such as the Kullback-Leibler (KL) divergence.
+
+# The approximation is achieved by optimizing the parameters of the simpler distribution so that it best matches the true posterior distribution. This optimization is typically done by minimizing the KL divergence between the true posterior distribution and the approximating distribution, subject to constraints on the approximating distribution.
+
+# Variational inference is widely used in machine learning applications such as Bayesian neural networks, latent variable models, and probabilistic graphical models.
+
+# Here's a simple code sample for performing variational inference on a Gaussian mixture model:
+import numpy as np
+from scipy.stats import norm
+
+# Define the generative model
+def generate_data(num_samples):
+    means = [1, 5]
+    stds = [0.5, 0.3]
+    weights = [0.4, 0.6]
+    z = np.random.choice(len(weights), size=num_samples, p=weights)
+    data = np.random.normal(loc=means[z], scale=stds[z])
+    return data
+
+# Define the variational distribution
+class VariationalDistribution:
+    def __init__(self):
+        self.mean = np.random.normal()
+        self.log_var = np.random.normal()
+    
+    def sample(self):
+        return np.random.normal(loc=self.mean, scale=np.exp(0.5*self.log_var))
+    
+    def kl_divergence(self, prior_mean=0, prior_std=1):
+        var = np.exp(self.log_var)
+        kl = 0.5 * (prior_std**2 + var - 1 - 2*self.log_var)
+        kl += 0.5 * ((self.mean - prior_mean)**2) / (prior_std**2)
+        return kl.sum()
+
+# Define the objective function to be optimized
+def objective(variational_dist, data):
+    num_samples = len(data)
+    log_likelihood = 0
+    for i in range(num_samples):
+        likelihoods = norm.pdf(data[i], loc=[0, 4], scale=[1, 1])
+        log_likelihood += np.log(np.dot(variational_dist.pdf, likelihoods))
+    kl_divergence = variational_dist.kl_divergence()
+    return log_likelihood - kl_divergence
+
+# Perform variational inference
+num_samples = 100
+data = generate_data(num_samples)
+variational_dist = VariationalDistribution()
+learning_rate = 0.01
+num_iterations = 1000
+for i in range(num_iterations):
+    gradient = 0
+    for j in range(num_samples):
+        likelihoods = norm.pdf(data[j], loc=[0, 4], scale=[1, 1])
+        posterior_probs = np.exp(variational_dist.log_var/2) * norm.pdf(data[j], loc=variational_dist.mean, scale=np.exp(variational_dist.log_var/2))
+        gradient += (likelihoods / np.dot(variational_dist.pdf, likelihoods)) * posterior_probs * np.array([data[j]-variational_dist.mean, (data[j]-4)-variational_dist.mean]) / np.exp(variational_dist.log_var)
+    variational_dist.mean += learning_rate * gradient[0]
+    variational_dist.log_var += learning_rate * gradient[1]
+
+# In this example, we generate data from a Gaussian mixture model with two components, and then use variational inference to estimate the parameters of the model. The variational distribution is a Gaussian distribution with learnable mean and log-variance. The objective function is the log-likelihood of the data minus the KL divergence between the variational distribution and the prior distribution. We optimize the objective function using stochastic gradient descent.
