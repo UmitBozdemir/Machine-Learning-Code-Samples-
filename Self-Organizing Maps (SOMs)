@@ -1,0 +1,53 @@
+# Self-Organizing Maps (SOMs) are a type of unsupervised machine learning algorithm used for data clustering and dimensionality reduction. SOMs are also known as Kohonen maps, named after the inventor, Teuvo Kohonen.
+
+# The algorithm works by creating a low-dimensional representation of the input data, usually in the form of a two-dimensional grid. Each node in the grid represents a cluster of similar data points in the input space. During the training phase, the SOM algorithm adjusts the position of each node in the grid to better match the input data. This process is iterative and continues until the nodes have converged to a stable configuration.
+
+# SOMs are useful for visualizing and exploring high-dimensional datasets. They can also be used for data compression and feature extraction, as the low-dimensional grid can be used as a representation of the original data. SOMs have been applied to a variety of fields, including image and signal processing, bioinformatics, and finance.
+
+# Here's an example code for implementing Self-Organizing Maps in Python using the minisom library:
+from minisom import MiniSom
+import numpy as np
+
+# create input data
+X = np.random.rand(100, 5)
+
+# define SOM parameters
+map_size = (10, 10)
+input_size = 5
+sigma = 1.0
+learning_rate = 0.5
+random_seed = 42
+
+# create SOM object
+som = MiniSom(map_size[0], map_size[1], input_size, sigma=sigma, learning_rate=learning_rate, random_seed=random_seed)
+
+# initialize weights
+som.random_weights_init(X)
+
+# train SOM
+som.train_random(X, 100)
+
+# get coordinates of best matching unit (BMU) for each input
+bmus = np.array([som.winner(x) for x in X])
+
+# plot SOM
+from pylab import plot, axis, show, pcolor, colorbar
+pcolor(som.distance_map().T)
+colorbar()
+
+# plot data points and BMUs
+for i, x in enumerate(X):
+    w = som.winner(x)
+    plot(w[0]+.5, w[1]+.5, 'o', markerfacecolor='None', markeredgecolor='r', markersize=10, markeredgewidth=2)
+    plot(i+.5, bmus[i][1]+.5, 'x', markerfacecolor='None', markeredgecolor='b', markersize=10, markeredgewidth=2)
+
+axis([0, map_size[0], 0, map_size[1]])
+show()
+
+# In this example, we first create a random 2D input data matrix X with 100 rows and 5 columns. Then, we define the SOM parameters such as the map size, input size, sigma (the radius of the neighborhood around the BMU), learning rate, and random seed.
+
+# We then create a MiniSom object and initialize its weights with random values. Next, we train the SOM with 100 iterations using the train_random method.
+
+# After training, we get the coordinates of the best matching unit (BMU) for each input using the winner method, and store them in bmus.
+
+# Finally, we plot the SOM using the distance_map method to show the distances between each node, and then plot the input data points and their corresponding BMUs on the SOM. The resulting plot shows the clusters formed by the SOM.
