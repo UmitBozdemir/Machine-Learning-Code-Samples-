@@ -1,0 +1,73 @@
+# Variational Autoencoder (VAE) is a generative model used in machine learning that combines the power of deep neural networks with probabilistic latent variable models. It is a type of neural network that is used to encode high-dimensional input data into a lower-dimensional latent representation that captures the underlying structure of the data. The VAE learns to encode data in such a way that it can be decoded to produce a close approximation of the original input.
+
+# The main idea behind VAEs is to learn the probability distribution of the input data and the latent representation simultaneously. This is achieved by minimizing the difference between the input data and the reconstructed data, while also maximizing the similarity between the learned distribution and a prior distribution (usually a normal distribution). This is done by introducing a regularization term into the loss function that encourages the latent representation to follow a prior distribution.
+
+# The resulting model can be used to generate new data by sampling from the learned distribution, allowing it to generate realistic samples that are similar to the original data. VAEs have been applied to a wide range of applications, including image and audio generation, anomaly detection, and data compression.
+
+# Here's an example code sample of a Variational Autoencoder in Python using TensorFlow:
+import tensorflow as tf
+from tensorflow.keras import layers
+from tensorflow.keras.datasets import mnist
+import numpy as np
+
+# Load the MNIST dataset
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# Normalize the input images between 0 and 1
+x_train = x_train.astype('float32') / 255.
+x_test = x_test.astype('float32') / 255.
+
+# Reshape the input images to (28, 28, 1) for the VAE model
+x_train = np.reshape(x_train, (len(x_train), 28, 28, 1))
+x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))
+
+# Define the encoder model
+latent_dim = 2
+
+encoder_inputs = tf.keras.Input(shape=(28, 28, 1))
+x = layers.Conv2D(32, 3, activation='relu', strides=2, padding='same')(encoder_inputs)
+x = layers.Conv2D(64, 3, activation='relu', strides=2, padding='same')(x)
+x = layers.Flatten()(x)
+x = layers.Dense(16, activation='relu')(x)
+z_mean = layers.Dense(latent_dim, name='z_mean')(x)
+z_log_var = layers.Dense(latent_dim, name='z_log_var')(x)
+
+# Define the sampling layer
+def sampling(args):
+    z_mean, z_log_var = args
+    epsilon = tf.keras.backend.random_normal(shape=(tf.keras.backend.shape(z_mean)[0], latent_dim), mean=0., stddev=1.)
+    return z_mean + tf.keras.backend.exp(z_log_var) * epsilon
+
+z = layers.Lambda(sampling, output_shape=(latent_dim,))([z_mean, z_log_var])
+
+# Define the decoder model
+decoder_inputs = layers.Input(shape=(latent_dim,))
+x = layers.Dense(7 * 7 * 64, activation='relu')(decoder_inputs)
+x = layers.Reshape((7, 7, 64))(x)
+x = layers.Conv2DTranspose(64, 3, activation='relu', strides=2, padding='same')(x)
+x = layers.Conv2DTranspose(32, 3, activation='relu', strides=2, padding='same')(x)
+decoder_outputs = layers.Conv2DTranspose(1, 3, activation='sigmoid', padding='same')(x)
+
+# Define the VAE model
+vae = tf.keras.Model(encoder_inputs, decoder_outputs)
+
+# Define the loss function
+reconstruction_loss = tf.keras.losses.binary_crossentropy(encoder_inputs, decoder_outputs)
+reconstruction_loss *= 28 * 28
+kl_loss = 1 + z_log_var - tf.keras.backend.square(z_mean) - tf.keras.backend.exp(z_log_var)
+kl_loss = tf.keras.backend.sum(kl_loss, axis=-1)
+kl_loss *= -0.5
+vae_loss = tf.keras.backend.mean(reconstruction_loss + kl_loss)
+vae.add_loss(vae_loss)
+
+# Compile the VAE model
+vae.compile(optimizer='adam')
+
+# Train the VAE model
+vae.fit(x_train, epochs=10, batch_size=128, validation_data=(x_test, None))
+
+# Generate new images from the learned distribution
+z_sample = np.random.normal(size=(batch_size, latent_dim))
+x_decoded = decoder.predict(z_sample)
+
+# Note that this is just an example code, and the actual implementation of a Variational Autoencoder can vary depending on the specific application and dataset being used.
