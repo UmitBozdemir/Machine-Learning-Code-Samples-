@@ -1,0 +1,41 @@
+# An Artificial Neural Network (ANN) is a machine learning model inspired by the structure and functioning of the human brain. It is composed of a large number of interconnected processing nodes, called neurons, which work together to process and transmit information.
+
+# Each neuron in an ANN receives input signals from other neurons or external sources, and produces an output signal based on its internal state and the strength of the input signals. The output signal is then transmitted to other neurons as input, and the process is repeated until the final output is generated.
+
+# The strength of the connections between neurons, called weights, is initially set randomly and then adjusted through a process called training, where the network learns to recognize patterns and make predictions based on the input data. The training process typically involves adjusting the weights using an algorithm that minimizes the difference between the predicted output and the actual output.
+
+# ANNs are widely used in various applications such as image recognition, natural language processing, speech recognition, and many more. They are particularly well-suited to handle complex, high-dimensional data and can learn to extract meaningful features from raw input data without explicit programming.
+
+# Here is a code sample of building an artificial neural network using the popular Python library TensorFlow:
+import tensorflow as tf
+from tensorflow import keras
+
+# Load the dataset
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+
+# Preprocess the data
+x_train = x_train / 255.0
+x_test = x_test / 255.0
+
+# Build the model
+model = keras.Sequential([
+    keras.layers.Flatten(input_shape=(28, 28)),
+    keras.layers.Dense(128, activation='relu'),
+    keras.layers.Dense(10, activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(x_train, y_train, epochs=5, batch_size=32, validation_data=(x_test, y_test))
+
+# Evaluate the model
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print('Test accuracy:', test_acc)
+
+# In this example, we first load the MNIST dataset, which consists of images of handwritten digits and their corresponding labels. We then preprocess the data by dividing the pixel values by 255 to scale them between 0 and 1.
+
+# Next, we build an artificial neural network using the Sequential model from Keras. The network consists of a single hidden layer with 128 neurons and a ReLU activation function, followed by an output layer with 10 neurons and a softmax activation function.
+
+# We then compile the model using the Adam optimizer and sparse categorical cross-entropy loss function, and train it on the training data for 5 epochs with a batch size of 32. Finally, we evaluate the model on the test data and print the test accuracy.
