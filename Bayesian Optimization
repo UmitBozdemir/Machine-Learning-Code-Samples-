@@ -1,0 +1,38 @@
+# Bayesian Optimization is a technique for optimizing black-box functions that are expensive to evaluate. It is commonly used in machine learning and other fields to optimize hyperparameters of models, such as the learning rate or regularization strength.
+
+# Bayesian Optimization uses a probabilistic model, typically a Gaussian Process, to model the unknown function being optimized. The model is updated with new observations as they are made, which allows the algorithm to balance exploration (trying out new parameter settings) with exploitation (using information gained from previous observations to find promising parameter settings).
+
+# The algorithm starts with an initial set of parameter settings to evaluate, and then selects the next set of parameters based on a trade-off between exploration and exploitation. This process continues until a satisfactory set of parameters is found, or a maximum number of evaluations is reached.
+
+# Bayesian Optimization can be computationally expensive, but it is particularly useful for optimizing functions with complex, non-linear behavior and high-dimensional input spaces.
+
+# Here is an example code snippet in Python using the scikit-optimize library for Bayesian Optimization:
+import numpy as np
+from skopt import gp_minimize
+from skopt.space import Real, Integer
+from skopt.utils import use_named_args
+from skopt.plots import plot_convergence
+
+# Define the objective function to optimize
+def objective_function(x):
+    y = (x[0]**2 + x[1]**2)
+    return y
+
+# Define the search space for the parameters
+space = [Real(-5, 5, name='x1'), Real(-5, 5, name='x2')]
+
+# Perform Bayesian Optimization
+result = gp_minimize(objective_function, space, n_calls=20, random_state=42)
+
+# Print the best parameter settings and corresponding objective value
+print("Best parameters: ", result.x)
+print("Best objective value: ", result.fun)
+
+# Plot the convergence over iterations
+plot_convergence(result)
+
+# In this example, we define a simple objective function objective_function that takes a two-dimensional input vector x and returns the sum of the squares of its elements. We also define the search space for the parameters x1 and x2 as real numbers in the range [-5, 5].
+
+# We then use gp_minimize from scikit-optimize to perform Bayesian Optimization with 20 function evaluations. The random_state parameter ensures reproducibility of the results.
+
+# Finally, we print the best parameter settings and corresponding objective value found by the optimization, and plot the convergence of the algorithm over iterations using plot_convergence.
