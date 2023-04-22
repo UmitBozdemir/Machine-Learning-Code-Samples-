@@ -1,0 +1,25 @@
+# Monte Carlo methods in machine learning refer to a family of algorithms that use random sampling to approximate solutions to problems that are too complex or intractable to solve using deterministic methods.
+
+# In the context of machine learning, Monte Carlo methods are used to estimate various quantities such as integrals, expectations, and probabilities. These methods are particularly useful in cases where analytical solutions are not possible or are too difficult to obtain.
+
+# One common application of Monte Carlo methods in machine learning is in the estimation of parameters for probabilistic models. In this case, the algorithm uses random sampling to generate data points and then uses these samples to estimate the parameters of the model.
+
+# Monte Carlo methods are also used in reinforcement learning to estimate the expected value of future rewards. This involves sampling possible actions and their outcomes to estimate the expected value of taking a particular action in a given state.
+
+# Overall, Monte Carlo methods are a powerful and flexible tool in machine learning, and they can be applied to a wide range of problems in areas such as optimization, inference, and decision-making.
+
+# Here's a code sample of Monte Carlo methods in ML using Python:
+import numpy as np
+
+def monte_carlo_pi(num_samples):
+    count_inside_circle = 0
+    for i in range(num_samples):
+        x, y = np.random.uniform(-1, 1, size=2)
+        if x**2 + y**2 <= 1:
+            count_inside_circle += 1
+    return 4 * count_inside_circle / num_samples
+
+pi_estimate = monte_carlo_pi(100000)
+print(f"Estimated value of pi: {pi_estimate:.5f}")
+
+# This code estimates the value of pi using Monte Carlo methods. The algorithm generates a large number of random points in a square of side length 2, centered at the origin. It then checks how many of these points fall inside a circle of radius 1 centered at the origin. The ratio of the number of points inside the circle to the total number of points generated is proportional to the area of the circle to the area of the square, which is pi/4. Multiplying by 4 gives an estimate of pi. The more points generated, the more accurate the estimate becomes. In this example, we generate 100,000 points to estimate pi.
