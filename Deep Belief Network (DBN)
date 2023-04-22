@@ -1,0 +1,40 @@
+# A Deep Belief Network (DBN) is a type of artificial neural network (ANN) that consists of multiple layers of artificial neurons or nodes, with each layer having a different level of abstraction.
+
+# DBNs are composed of stacked Restricted Boltzmann Machines (RBMs), which are unsupervised learning models that learn to reconstruct input data by adjusting the weights between nodes. The output of one layer of RBMs is used as the input to the next layer, creating a hierarchical structure that allows for more complex and abstract representations of the input data.
+
+# DBNs are used for tasks such as image and speech recognition, natural language processing, and recommendation systems. They are particularly effective at unsupervised learning tasks, such as feature learning, which involves identifying meaningful patterns and features in the input data.
+
+# Here is an example code for a Deep Belief Network using Python and the TensorFlow library:
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.utils import to_categorical
+
+# Load the MNIST dataset
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# Preprocess the data
+x_train = x_train.reshape(-1, 784).astype('float32') / 255.0
+x_test = x_test.reshape(-1, 784).astype('float32') / 255.0
+y_train = to_categorical(y_train, num_classes=10)
+y_test = to_categorical(y_test, num_classes=10)
+
+# Define the Deep Belief Network
+input_layer = Input(shape=(784,))
+hidden_layer1 = Dense(256, activation='sigmoid')(input_layer)
+hidden_layer2 = Dense(128, activation='sigmoid')(hidden_layer1)
+output_layer = Dense(10, activation='softmax')(hidden_layer2)
+
+# Create the model
+model = Model(inputs=input_layer, outputs=output_layer)
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_test, y_test))
+
+# In this example, we load the MNIST dataset, which consists of images of handwritten digits. We preprocess the data by flattening the images and scaling the pixel values between 0 and 1. We then define a Deep Belief Network with three layers: an input layer, two hidden layers, and an output layer. The hidden layers use the sigmoid activation function, and the output layer uses the softmax activation function.
+
+# We compile the model with the Adam optimizer and categorical cross-entropy loss, and we train the model for 10 epochs with a batch size of 32. We also evaluate the model on the test set.
